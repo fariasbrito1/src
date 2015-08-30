@@ -201,7 +201,7 @@ public class Principal {
                 List<Element> pessoas = cv.getChildren();
 
                 for (Element pessoa : pessoas) {
-                    System.out.println(pessoa.getChildren("dadosPessoais"));
+                    System.out.println(pessoa.getChildText("dadosPessoais"));
                     System.out.println(pessoa.getChild("dadosPessoais").getChildText("nome"));
                     if(person.equals(pessoa.getAttributeValue("id"))){
                         
