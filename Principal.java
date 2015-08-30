@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Scanner;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
@@ -15,19 +16,15 @@ import org.jdom2.output.XMLOutputter;
 public class Principal {
 
     public static void main(String[] args) throws JDOMException {
-
         Scanner tec = new Scanner(System.in);
-        Scanner tec2 = new Scanner(System.in);
         int menu;
-        int id1;
-
-        System.out.println("Digite o número de ID do ultimo curriculo criado");
-        id1 = tec2.nextInt();
         System.out.println("Bem-Vindo, Escolha uma das seguintes opções\n1-Cadastrar novo curriculo\n2-Editar Curriculo\n3-Relatorio");
         menu = tec.nextInt();
-
         if (menu == 1) {
-
+            Scanner tec2 = new Scanner(System.in);
+            int id1;
+            System.out.println("Digite o número de ID do ultimo curriculo criado");
+            id1 = tec2.nextInt();
             XMLOutputter xout = new XMLOutputter();
             Element cv = new Element("cv");
             Element pessoa = new Element("pessoa");
@@ -182,6 +179,48 @@ public class Principal {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (menu == 2) {
+            String person;
+            Scanner key = new Scanner(System.in);
+            System.out.println("Deseja pesquisar por nome ou id?");
+            if (key.next().equals("id")) {
+                System.out.println("Qual o id desejado");
+                person = tec.next();
+            } else {
+                System.out.println("Qual o nome desejado");
+                person = tec.next();
+            }
+            File f = new File("Curriculo.xml");
+            SAXBuilder builder = new SAXBuilder();
+
+            Document doc;
+            try {
+                doc = builder.build(f);
+                Element cv = (Element) doc.getRootElement();
+
+                List<Element> pessoas = cv.getChildren();
+
+                for (Element pessoa : pessoas) {
+                    System.out.println(pessoa.getChildren("dadosPessoais"));
+                    System.out.println(pessoa.getChild("dadosPessoais").getChildText("nome"));
+                    if(person.equals(pessoa.getAttributeValue("id"))){
+                        
+                    }
+                    
+                    else if(person.equals(pessoa.getChild("dadosPessoais").getChildText("nome"))){
+                        
+                    }
+                    
+
+                }
+            } catch (JDOMException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
         }
     }
 }
