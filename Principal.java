@@ -34,7 +34,6 @@ public class Principal {
             Element formacao = new Element("Formação");
 
             id1++;
-            //teste
             String ID = Integer.toString(id1);
 
             Attribute id = new Attribute("id", ID);
@@ -122,7 +121,6 @@ public class Principal {
                 instituicaoM.addContent(cursoM);
                 formacao.addContent(instituicaoM);
             }
-            
 
             System.out.println("Possui Doutorado ?(1-sim/2-nao):");
             mestr = tec.nextInt();
@@ -156,12 +154,11 @@ public class Principal {
                 cursoD.setAttribute(nivelD);
                 instituicaoD.addContent(cursoD);
                 formacao.addContent(instituicaoD);
-            } 
-            
+            }
 
             pessoa.addContent(dadosPessoais);
             pessoa.addContent(formacao);
-            File f = new File("C:\\Users\\Lucas\\Desktop\\Curriculo.xml");
+            File f = new File("Curriculo.xml");
             try {
                 if (!f.exists()) {
                     Document doc = new Document();
@@ -182,11 +179,9 @@ public class Principal {
                     System.out.println("Documento alterado com sucesso!");
                 }
 
-            } 
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 }
-        
