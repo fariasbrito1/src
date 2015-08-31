@@ -1,6 +1,8 @@
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -22,12 +24,11 @@ public class Principal {
         int menu;
         int id1;
 
-        System.out.println("Digite o número de ID do ultimo curriculo criado");
+        System.out.println("Digite o número de ID do ultimo curriculo criado, Digite 0(zero) caso nenhum curriculo tenha sido registrado");
         id1 = tec2.nextInt();
-        System.out.println("Bem-Vindo, Escolha uma das seguintes opções\n1-Cadastrar novo curriculo\n2-Editar Curriculo\n3-Relatorio/n4-Salvar em arquivo de texto");
+        System.out.println("Bem-Vindo, Escolha uma das seguintes opções\n1-Cadastrar novo curriculo\n2-Editar Curriculo\n3-Relatorio\n4-Salvar em arquivo de texto");
         menu = tec.nextInt();
 
-        
         //-CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR--CADASTRAR-
         if (menu == 1) {
 
@@ -189,19 +190,12 @@ public class Principal {
         }
 
         //-EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO--EDIÇÃO-
-        
-        
-        
         if (menu == 2) {
 
             System.out.println("deseja procurar um curriculo por 1-NOME ou por 2-ID ?");
             int opcaobusca = tec.nextInt();
-            
 
             // -EDIÇÃO POR NOME--EDIÇÃO POR NOME--EDIÇÃO POR NOME--EDIÇÃO POR NOME--EDIÇÃO POR NOME--EDIÇÃO POR NOME--EDIÇÃO POR NOME--ED
-            
-            
-            
             if (opcaobusca == 1) {
 
                 System.out.println("deseja adicionar instituição ou curso em: 1-Mestrado ou 2-Doutorado ou 3-Graduando");
@@ -357,9 +351,6 @@ public class Principal {
                 }
 
             // -EDIÇÃO POR ID--EDIÇÃO POR ID--EDIÇÃO POR ID--EDIÇÃO POR ID--EDIÇÃO POR ID--EDIÇÃO POR ID--EDIÇÃO POR ID--EDIÇÃO POR ID-
-                
-                
-                
                 if (opcaobusca == 2) {
                     System.out.println("deseja adicionar instituição ou curso em: 1-Mestrado ou 2-Doutorado ou 3-Graduando");
                     int opcao2 = tec.nextInt();
@@ -519,26 +510,151 @@ public class Principal {
 
             }
         }
-        
-        
+
         // -relatorio--relatorio--relatorio--relatorio--relatorio--relatorio--relatorio--relatorio--relatorio--relatorio--relatorio-
-        
-        
-        if(menu == 3){
-            System.out.println("Selecione qual dos seguintes relatorios deseja visualizar: 1-todas as pessoas que estudaram em uma determinada instituição inserida pelo usuário (nome, sexo, curso)/n2-todos as mulheres que fizeram ou estão fazendo mestrado no Brasil (nome, instituição, curso, status (concluído/em andamento)) /n3-todos os homens que fizeram doutorado no exterior (nome, idade, instituição, curso, ano de término)");
+        if (menu == 3) {
+            System.out.println("Selecione qual dos seguintes relatorios deseja visualizar: \n1-todas as pessoas que estudaram em uma determinada instituição inserida pelo usuário (nome, sexo, curso)\n2-todos as mulheres que fizeram ou estão fazendo mestrado no Brasil (nome, instituição, curso, status (concluído/em andamento)) \n3-todos os homens que fizeram doutorado no exterior (nome, idade, instituição, curso, ano de término)");
             int relat = tec.nextInt();
-            if(relat == 1){}
-            if(relat == 2){}
-            if(relat == 3){}
-            
-            
-        
-        
-        
+            if (relat == 1) {
+                try {
+                    SAXBuilder builder = new SAXBuilder();
+                    Document doc = builder.build("C:\\Users\\Lucas\\Desktop\\Curriculo.xml");
+                    Element root = (Element) doc.getRootElement();
+                    Element curriculos = null;
+                    ArrayList<Element> listacur = (ArrayList<Element>) root.getChildren();
+
+                    System.out.println("Digite a Instituição a procurar:");
+                    String buscainstituicao = tec.next();
+                    for (Element listacur1 : listacur) {
+                        for (int a = 0; a < listacur1.getChildren().size(); a++) {
+                            for (int b = 0; b < listacur1.getChildren().get(a).getChildren().size(); b++) {
+                                for (int c = 0; c < listacur1.getChildren().get(a).getChildren().get(b).getChildren().size(); c++) {
+                                    if (buscainstituicao.equalsIgnoreCase(listacur1.getChildren().get(a).getChildren().get(b).getAttributeValue("nome"))) {
+                                        System.out.println("nome: " + listacur1.getChild("DadosPessoais").getChildText("Nome")
+                                                + " sexo: " + listacur1.getChild("DadosPessoais").getChildText("Sexo")
+                                                + " curso: " + listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("curso") + "\r\n");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (IOException ex) {
+
+                }
+            }
+            if (relat == 2) {
+                try {
+                    SAXBuilder builder = new SAXBuilder();
+                    Document doc = builder.build("C:\\Users\\Lucas\\Desktop\\Curriculo.xml");
+                    Element root = (Element) doc.getRootElement();
+                    Element curriculos = null;
+                    ArrayList<Element> listacur = (ArrayList<Element>) root.getChildren();
+
+                    for (Element listacur1 : listacur) {
+                        if (listacur1.getChild("DadosPessoais").getChildText("Sexo").equalsIgnoreCase("feminino")) {
+                            for (int a = 0; a < listacur1.getChildren().size(); a++) {
+                                for (int b = 0; b < listacur1.getChildren().get(a).getChildren().size(); b++) {
+                                    for (int c = 0; c < listacur1.getChildren().get(a).getChildren().get(b).getChildren().size(); c++) {
+                                        if (listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("Nivel").equals("Mestrado")) {
+                                            if (listacur1.getChildren().get(a).getChildren().get(b).getAttributeValue("país").equalsIgnoreCase("Brasil")) {
+                                                System.out.println("nome:" + listacur1.getChild("DadosPessoais").getChildText("Nome")
+                                                        + " instituição:" + listacur1.getChildren().get(a).getChildren().get(b).getAttributeValue("nome")
+                                                        + " curso:" + listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("curso"));
+                                                if (listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoFim").equalsIgnoreCase("inacabado")) {
+                                                    System.out.println(" Status:" + listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoFim") + "\r\n");
+                                                } else {
+                                                    System.out.println(" Terminou em:" + listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoFim") + "\r\n");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } catch (JDOMException | IOException ex) {
+
+                }
+            }
+            if (relat == 3) {
+                try {
+                    SAXBuilder builder = new SAXBuilder();
+                    Document doc = builder.build("C:\\Users\\Lucas\\Desktop\\Curriculo.xml");
+                    Element root = (Element) doc.getRootElement();
+                    Element curriculos = null;
+                    ArrayList<Element> listacur = (ArrayList<Element>) root.getChildren();
+
+                    for (Element listacur1 : listacur) {
+                        if (listacur1.getChild("DadosPessoais").getChildText("Sexo").equalsIgnoreCase("masculino")) {
+                            for (int a = 0; a < listacur1.getChildren().size(); a++) {
+                                for (int b = 0; b < listacur1.getChildren().get(a).getChildren().size(); b++) {
+                                    for (int c = 0; c < listacur1.getChildren().get(a).getChildren().get(b).getChildren().size(); c++) {
+                                        if (listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("Nivel").equals("Doutorado")) {
+                                            if (!(listacur1.getChildren().get(a).getChildren().get(b).getAttributeValue("país").equalsIgnoreCase("Brasil"))) {
+                                                if (!(listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoFim").equalsIgnoreCase("inacabado"))) {
+                                                    System.out.println("nome:" + listacur1.getChild("DadosPessoais").getChildText("Nome")
+                                                            + " idade:" + listacur1.getChild("DadosPessoais").getChildText("Idade")
+                                                            + " instituição:" + listacur1.getChildren().get(a).getChildren().get(b).getAttributeValue("nome")
+                                                            + " curso:" + listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("curso")
+                                                            + " ano de término:" + listacur1.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoFim") + "\r\n");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } catch (JDOMException | IOException ex) {
+
+                }
+            }
+
         }
          //-SALVAR ARQUIVO--SALVAR ARQUIVO--SALVAR ARQUIVO--SALVAR ARQUIVO--SALVAR ARQUIVO--SALVAR ARQUIVO--SALVAR ARQUIVO--SALVAR ARQUIVO-
-        
-        if(menu == 4){
+
+        if (menu == 4) {
+            try {
+                SAXBuilder builder = new SAXBuilder();
+                Document doc = builder.build("C:\\Users\\Lucas\\Desktop\\Curriculo.xml");
+                Element root = (Element) doc.getRootElement();
+                Element curriculos = null;
+                ArrayList<Element> listacur = (ArrayList<Element>) root.getChildren();
+
+                System.out.println("Digite o nome do candidato para salvar o curriculo:");
+                String nome = tec.next();
+                for (int i = 0; i < listacur.size(); i++) {
+                    curriculos = listacur.get(i);
+                    if (curriculos.getChild("DadosPessoais").getChildText("Nome").equalsIgnoreCase(nome)) {
+                        FileWriter f2 = new FileWriter("C:\\Users\\Lucas\\Desktop\\CV_" + curriculos.getAttributeValue("id") + ".txt");
+                        BufferedWriter bf2 = new BufferedWriter(f2);
+                        bf2.write("Nome: " + curriculos.getChild("DadosPessoais").getChildText("Nome")
+                                + "\r\nSexo: " + curriculos.getChild("DadosPessoais").getChildText("Sexo")
+                                + "\r\nIdade: " + curriculos.getChild("DadosPessoais").getChildText("Idade") + "\r\n\r\n");
+                        for (int a = 0; a < curriculos.getChildren().size(); a++) {
+                            for (int b = 0; b < curriculos.getChildren().get(a).getChildren().size(); b++) {
+                                for (int c = 0; c < curriculos.getChildren().get(a).getChildren().get(b).getChildren().size(); c++) {
+                                    bf2.write(curriculos.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("Nivel") + ": "
+                                            + curriculos.getChildren().get(a).getChildren().get(b).getAttributeValue("nome") + "("
+                                            + curriculos.getChildren().get(a).getChildren().get(b).getAttributeValue("país") + ")"
+                                            + "\r\nCurso: " + curriculos.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("curso")
+                                            + "\r\nInício: " + curriculos.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoIni")
+                                            + "\r\nTérmino: " + curriculos.getChildren().get(a).getChildren().get(b).getChildren().get(c).getAttributeValue("anoFim") + "\r\n\r\n");
+                                }
+                            }
+                        }
+                        System.out.println("Curriculo salvo com sucesso!");
+                        bf2.close();
+                        f2.close();
+                    } else {
+                        System.out.println("Pessoa nao cadastrada");
+                    }
+                }
+            } catch (JDOMException | IOException ex) {
+
+            }
         }
     }
 }
