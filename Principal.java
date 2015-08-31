@@ -1,14 +1,7 @@
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.Scanner;
-import org.jdom2.Attribute;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
+import java.io.*;
+import java.util.*;
+import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -186,14 +179,15 @@ public class Principal {
                         Element curso = new Element("Curso");
                         Element instituicao = new Element("Instituição");
                         String grad, inst, paiz, curs, ini, fim;
+                        
 
                         if (tec.next().equals("1")) {
                             System.out.println("Nome da Instituição: ");
-                            inst = tec.next();
+                            pessoa.getChild("Formacão").addContent("Instituição").setAttribute("nome", tec.next());
                             System.out.println("Digite o país da instituição: ");
-                            paiz = tec.next();
+                            pessoa.getChild("Formacão").getChild("Instituição").setAttribute("pais", tec.next());
                             System.out.println("Qual o nível? [Graduação, Mestrado, Doutorado]");
-                            grad = tec.next();
+                            pessoa.getChild("Formacão").getChild("Instituição").addContent("Curso").setAttribute("Nivel", tec.next());
                             System.out.println("Nome do Curso:");
                             curs = tec.next();
                             System.out.println("Digite o ano de inicio do curso:");
@@ -203,11 +197,10 @@ public class Principal {
 
                         } else {
                             inst = pessoa.getChild("Formação").getChild("Instituição").getAttributeValue("nome");
+                            //pessoa.getChild("Formação").getChild("Instituição")
                             System.err.println(pessoa.getChild("Formação").getChild("Instituição").getAttributeValue("nome"));
-                            paiz = pessoa.getChild("Formação").getChild("Instituição").getAttributeValue("país");
                             System.err.println(pessoa.getChild("Formação").getChild("Instituição").getAttributeValue("país"));
                             System.out.println("Qual o nível? [Graduação, Mestrado, Doutorado]");
-                            grad = tec.next();
                             System.out.println("Nome do Curso:");
                             curs = tec.next();
                             System.out.println("Digite o ano de inicio do curso:");
@@ -215,27 +208,25 @@ public class Principal {
                             System.out.println("Digite o ano previsto de término do curso:");
                             fim = tec.next();
                         }
-                        Attribute nivel = new Attribute("Nivel", grad);
-                        Attribute nomeinst = new Attribute("nome", inst);
-                        Attribute pais = new Attribute("país", paiz);
-                        Attribute nomecurso = new Attribute("curso", curs);
-                        Attribute anoInicio = new Attribute("anoIni", ini);
-                        Attribute anoFim = new Attribute("anoFim", fim);
-
-                        instituicao.setAttribute(nomeinst);
-                        instituicao.setAttribute(pais);
-                        curso.setAttribute(nomecurso);
-                        curso.setAttribute(anoInicio);
-                        curso.setAttribute(anoFim);
-                        curso.setAttribute(nivel);
-                        instituicao.addContent(curso);
-                        formacao.addContent(instituicao);
-                        pessoa.addContent(formacao);
-                        cv.addContent(pessoa);
                         
+//                        Attribute nivel = new Attribute("Nivel", grad);
+//                        Attribute nomeinst = new Attribute("nome", inst);
+//                        Attribute pais = new Attribute("país", paiz);
+//                        Attribute nomecurso = new Attribute("curso", curs);
+//                        Attribute anoInicio = new Attribute("anoIni", ini);
+//                        Attribute anoFim = new Attribute("anoFim", fim);
+
+//                        instituicao.setAttribute(nomeinst);
+//                        instituicao.setAttribute(pais);
+//                        curso.setAttribute(nomecurso);
+//                        curso.setAttribute(anoInicio);
+//                        curso.setAttribute(anoFim);
+//                        curso.setAttribute(nivel);
+//                        instituicao.addContent(curso);
+//                        formacao.addContent(instituicao);
                         break;
                     }
-
+                    
                 }
                 XMLOutputter xout = new XMLOutputter();
                 doc = builder.build(f);
